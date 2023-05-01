@@ -8,6 +8,7 @@ from .utils import get_unique_short_url
 
 @app.route('/', methods=['GET', 'POST'])
 def index_view():
+    """Вью функция главной страницы"""
     form = YacutForm()
     if form.validate_on_submit():
         custom_id = form.custom_id.data
@@ -22,7 +23,7 @@ def index_view():
         )
         db.session.add(url_map)
         db.session.commit()
-        flash(f'Ваша новая ссылка готова: '
+        flash(f'Ваша новая ссылка: '
               f'<a href="{request.base_url}{custom_id}">'
               f'{request.base_url}{custom_id}</a>')
     return render_template('index.html', form=form)

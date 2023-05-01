@@ -5,7 +5,7 @@ SYMBOLS_CHOICE = list(ascii_letters + digits)
 
 
 def get_unique_short_url():
-    """Алгоритм формирования коротких идентификаторов переменной длины."""
+    """Алгоритм формирования коротких идентификаторов переменной длины"""
     short = random.choices(SYMBOLS_CHOICE, k=6)
     return ''.join(short)
 
