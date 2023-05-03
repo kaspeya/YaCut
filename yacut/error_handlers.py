@@ -29,6 +29,11 @@ def page_not_found(error):
     return render_template('404.html'), HTTPStatus.NOT_FOUND
 
 
+@app.errorhandler(HTTPStatus.INTERNAL_SERVER_ERROR)
+def internal_error(error):
+    return render_template('500.html'), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
 def check_inique_short_url(custom_id):
     if URLMap.query.filter_by(short=custom_id).first():
         return custom_id

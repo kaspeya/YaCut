@@ -10,22 +10,23 @@ from .utils import get_unique_short_url
 def index_view():
     """Вью функция главной страницы"""
     form = YacutForm()
-    if form.validate_on_submit():
-        custom_id = form.custom_id.data
-        if not custom_id:
-            custom_id = get_unique_short_url()
-        elif URLMap.query.filter_by(short=custom_id).first():
-            form.custom_id.errors = [f'Имя {custom_id} уже занято!']
-            return render_template('index.html', form=form)
-        url_map = URLMap(
-            original=form.original_link.data,
-            short=custom_id,
-        )
-        db.session.add(url_map)
-        db.session.commit()
-        flash(f'Ваша новая ссылка: '
-              f'<a href="{request.base_url}{custom_id}">'
-              f'{request.base_url}{custom_id}</a>')
+    custom_id = form.custom_id.data
+    if not form.validate_on_submit():
+        return render_template('index.html', form=form)
+    if not custom_id:
+        custom_id = get_unique_short_url()
+    if URLMap.query.filter_by(short=custom_id).first():
+        form.custom_id.errors = [f'Имя {custom_id} уже занято!']
+        return render_template('index.html', form=form)
+    url_map = URLMap(
+        original=form.original_link.data,
+        short=custom_id,
+    )
+    db.session.add(url_map)
+    db.session.commit()
+    flash('Ваша новая ссылка: '
+          f'<a href="{request.base_url}{custom_id}">'
+          f'{request.base_url}{custom_id}</a>')
     return render_template('index.html', form=form)
 
 

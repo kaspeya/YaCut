@@ -1,24 +1,32 @@
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, URLField
-from wtforms.validators import DataRequired, Length, Optional
+from wtforms.validators import DataRequired, Length, Optional, Regexp
 
-import settings
+from settings import (FORM_LEN_MSG, FORM_REGEX_MSG, FORM_REQUIRED_FIELD,
+                      MAX_LEN_CUSTOM_ID, REGEX_PATTERN)
 
 
 class YacutForm(FlaskForm):
     """Форма модели URLMap"""
     original_link = URLField(
         'Длинная ссылка',
-        validators=[DataRequired(message=settings.FORM_REQUIRED_FIELD),
-                    Length(1, 256)]
+        validators=[
+            DataRequired(message=FORM_REQUIRED_FIELD),
+            Length(1, 256)
+        ]
     )
     custom_id = URLField(
         'Ваш вариант короткой ссылки',
         validators=[
             Length(
-                1, settings.MAX_LEN_CUSTOM_ID,
-                message=settings.FORM_LEN_MSG),
+                1,
+                max=MAX_LEN_CUSTOM_ID,
+                message=FORM_LEN_MSG
+            ),
+            Regexp(
+                REGEX_PATTERN,
+                message=FORM_REGEX_MSG
+            ),
             Optional()
-        ]
-    )
+        ])
     submit = SubmitField('Создать')
