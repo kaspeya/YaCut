@@ -5,7 +5,6 @@ from flask import jsonify, request
 
 from settings import (INVALID_URL_NAME, NO_REQUEST_BODY, NO_REQUIRED_FIELD,
                       NOT_FOUND, REGEX_PATTERN)
-
 from . import app, db
 from .error_handlers import InvalidAPIUsage, check_inique_short_url
 from .models import URLMap
